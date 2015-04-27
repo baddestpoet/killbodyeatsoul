@@ -20,7 +20,8 @@ body a:hover {
     text-decoration: underline;
 }
 h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
+    margin-bottom: 0;
 }
 img {
     max-width: 100%;
@@ -38,17 +39,18 @@ img {
     width: 100%;
     text-align: center;
 }
-#navigation {
-    margin-top: 35px;
-}
 #navigation ul, #subnav ul {
     list-style-type: none;
 }
-#navigation li, #subnav li {
-    display: inline;font-size: 1.2rem;
+#navigation {
+    position: absolute;
+    margin-left: 800px;
+}
+#subnav li {
+    display: inline;
 }
 #navigation a {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 #subnav a {
     font-size: 1.0rem;
@@ -56,7 +58,7 @@ img {
 #outercontent {
     clear: both;
     max-width: 100%;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 #innercontent {
     padding-left: 15px;

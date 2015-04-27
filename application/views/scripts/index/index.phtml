@@ -1,0 +1,108 @@
+<div class="header">
+    <div id="subnav">
+        <ul>
+            <li>.<a href="javascript:void(0);" onClick="showEntry('recite')">recite</a></li>
+            <li>.<a href="javascript:void(0);" onClick="showEntry('tags')">tags</a></li>
+            <li>.<a href="javascript:void(0);" onClick="showEntry('comments')">comments</a></li>
+            <li>.<a href="/?id=<?php echo $this->randomStuff['id'] ?>">random</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="toggle togglerecite">
+    <q><?php echo $this->quote->quote ?></q><br>
+    <strong><?php echo $this->quote->author ?></strong>
+</div>
+<div class="toggle toggletags">
+    <?php foreach ($this->tags as $tag): ?>
+        <a href="/?tag=<?php echo $tag->name ?>"><?php echo $tag->name ?></a>
+    <?php endforeach; ?>
+</div>
+<div class="toggle togglecomments">
+    <?php foreach ($this->latestComments as $comment): ?>
+        <?php if($comment['url']): ?>
+            <a href="<?php echo $comment['url'] ?>">
+        <?php endif; ?><?php echo $comment['author']?><?php if($comment['url']): ?></a>
+        <?php endif; ?>
+        on <a href="/?id=<?php echo $comment['post_id'] ?>"><?php echo $comment['title'] ?></a><br>
+    <?php endforeach; ?>
+</div>
+
+<?php foreach($this->paginator as $post): ?>
+    <article>
+        <header>
+            <h2><?php echo $post->title ?></h2>
+        </header>
+        <div class="posttext">
+            <?php echo $post->text ?>
+        </div>
+        <?php if ($post->pic) : ?>
+            <a href="/images/<?php echo $post->id ?>.jpg"><img src="/images/<?php echo $post->id ?>.jpg" alt="<?php echo $post->title?>"></a>
+        <?php endif; ?>
+        <p class="posttags">
+        <?php foreach($this->taglist[$post->id] as $tag): ?>
+            <a href="/?tag=<?php echo $tag['name'] ?>"><?php echo $tag['name'] ?></a>
+        <?php endforeach; ?>
+        </p>
+        <p class="postdate">
+            <a href="javascript:void(0);" onClick="showEntry(<?php echo $post->id ?>)" class="commentLink">
+                <?php if(isset($this->comments[$post->id])): ?>
+                    <?php $commentCount = count($this->comments[$post->id]); ?>
+                    <?php if ($commentCount == 1): ?>
+                        1 comment
+                    <?php else: ?>
+                        <?php echo $commentCount ?> comments
+                    <?php endif; ?>
+                <?php else: ?>
+                    0 comments
+                <?php endif; ?>
+            </a>
+            <time>
+                <?php echo str_replace( '0', '', date("ymd", strtotime($post->date))); ?>
+            </time>
+        </p>
+        <div class="toggle toggle<?php echo $post->id ?> comment">
+            <?php foreach ($this->comments as $key => $commentedPost): ?>
+                <?php if ($key == $post->id): ?>
+                    <?php foreach ($commentedPost as $comment): ?>
+                        <div class="comment">
+                            <span class="commentAuthor">
+                                <?php if($comment['url']): ?>
+                                    <a href="<?php echo $comment['url'] ?>">
+                                <?php endif; ?>
+                                <?php echo $comment['author'] ?>
+                                <?php if($comment['url']): ?>
+                                    </a>
+                                <?php endif; ?>
+                            </span>
+                            <br>
+                            <p class="commentText">
+                                <?php echo $comment['text'] ?>
+                            </p>
+                            <span class="commentDate">
+                                <?php echo str_replace( '0', '', date("ymd", strtotime($comment['date']))); ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <hr>
+            <?php
+                $formdata = array(
+                    'text' => '',
+                    'post_id' => $post['id']
+                );
+                $this->form->populate($formdata);
+            ?>
+            <?php echo $this->form; ?>
+        </div>
+    </article>
+<?php endforeach; ?>
+<div class="paginator">
+    <?php echo $this->paginationControl($this->paginator,
+        'Sliding',
+        'pagination.phtml',
+        array('tag' => $this->tag))
+    ?>
+</div>
+<div id="overlay"></div>

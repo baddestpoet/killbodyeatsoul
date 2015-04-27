@@ -1,0 +1,11 @@
+<div class="paginator">
+    <?php if ($this->pageCount): ?>
+        <?php if (isset($this->previous)): ?>
+            <a href="<?php echo $this->baseUrl() ?>?page=<?php echo $this->previous; ?><?php if(isset($this->tag)) : ?>&tag=<?php echo $this->tag ?><?php endif;?>" class="newerLink">&lt; newer</a>
+        <?php endif; ?>
+
+        <?php if (isset($this->next)): ?>
+            <a href="<?php echo $this->baseUrl() ?>?page=<?php echo $this->next; ?><?php if(isset($this->tag)) : ?>&tag=<?php echo $this->tag ?><?php endif;?>" class="olderLink">older &gt;</a>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
